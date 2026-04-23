@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhoneFlex</title>
+
+<style>
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont;
+  background:#000;
+  color:#fff;
+}
+
+/* NAV */
+nav{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 40px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+}
+
+.logo{
+  font-size:22px;
+  font-weight:600;
+}
+
+.btn{
+  background:linear-gradient(135deg,#22c55e,#4ade80);
+  padding:10px 18px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:100px 20px;
+  animation:fadeIn 1.5s ease;
+}
+
+.hero h1{
+  font-size:50px;
+}
+
+/* FILTER */
+.filters{
+  text-align:center;
+  margin:20px;
+}
+
+.filter-btn{
+  padding:10px 20px;
+  margin:5px;
+  border-radius:10px;
+  border:1px solid #333;
+  cursor:pointer;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+  padding:40px;
+}
+
+.card{
+  background:#111;
+  border-radius:20px;
+  padding:15px;
+  transition:0.4s;
+  opacity:0;
+  transform:translateY(40px);
+}
+
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 40px rgba(0,255,100,0.2);
+}
+
+.card img{
+  width:100%;
+  border-radius:15px;
+}
+
+/* CHECKOUT */
+#checkout{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#111;
+  padding:30px;
+  border-radius:20px;
+  width:300px;
+}
+
+/* WHATSAPP */
+.whatsapp{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25D366;
+  padding:15px;
+  border-radius:50%;
+  color:white;
+  text-decoration:none;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">PhoneFlex</div>
+<button class="btn">Login</button>
+</nav>
+
+<section class="hero">
+<h1>Experience Flagship Phones</h1>
+<p>Rent iPhones & Androids without buying</p>
+</section>
+
+<div class="filters">
+<button class="filter-btn" onclick="filter('all')">All</button>
+<button class="filter-btn" onclick="filter('iphone')">iPhone</button>
+<button class="filter-btn" onclick="filter('android')">Android</button>
+</div>
+
+<section class="grid">
+
+<div class="card iphone">
+<img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569">
+<h3>iPhone 15 Pro Max</h3>
+<p>₹6999/month</p>
+<button class="btn" onclick="checkout('iPhone 15 Pro Max',6999)">Rent</button>
+</div>
+
+<div class="card iphone">
+<img src="https://images.unsplash.com/photo-1603899122760-3f8b74f3a39c">
+<h3>iPhone 14 Pro</h3>
+<p>₹5999/month</p>
+<button class="btn" onclick="checkout('iPhone 14 Pro',5999)">Rent</button>
+</div>
+
+<div class="card android">
+<img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf">
+<h3>Samsung S24 Ultra</h3>
+<p>₹6999/month</p>
+<button class="btn" onclick="checkout('Samsung S24 Ultra',6999)">Rent</button>
+</div>
+
+<div class="card android">
+<img src="https://images.unsplash.com/photo-1600086827875-a63b01f1335c">
+<h3>OnePlus 12</h3>
+<p>₹4499/month</p>
+<button class="btn" onclick="checkout('OnePlus 12',4499)">Rent</button>
+</div>
+
+</section>
+
+<!-- CHECKOUT -->
+<div id="checkout">
+<h3 id="phoneName"></h3>
+<p id="price"></p>
+
+<input placeholder="Your Name"><br><br>
+<input placeholder="Address"><br><br>
+
+<button class="btn" onclick="pay()">Proceed</button>
+<br><br>
+<button onclick="closeBox()">Cancel</button>
+</div>
+
+<a class="whatsapp" href="https://wa.me/917782098599">WA</a>
+
+<script>
+
+// Animation
+setTimeout(()=>{
+  document.querySelectorAll('.card').forEach((c,i)=>{
+    setTimeout(()=>c.classList.add('show'), i*150);
+  });
+},200);
+
+// Filter
+function filter(type){
+  document.querySelectorAll('.card').forEach(card=>{
+    if(type==='all' || card.classList.contains(type)){
+      card.style.display='block';
+    }else{
+      card.style.display='none';
+    }
+  });
+}
+
+// Checkout
+function checkout(phone,price){
+  document.getElementById('checkout').style.display='block';
+  document.getElementById('phoneName').innerText=phone;
+  document.getElementById('price').innerText="₹"+price+"/month";
+}
+
+// Close
+function closeBox(){
+  document.getElementById('checkout').style.display='none';
+}
+
+// Payment → WhatsApp
+function pay(){
+  let phone=document.getElementById('phoneName').innerText;
+  let msg=`Hi I want to rent ${phone}`;
+  window.open("https://wa.me/917782098599?text="+encodeURIComponent(msg));
+}
+
+</script>
+
+</body>
+</html>
